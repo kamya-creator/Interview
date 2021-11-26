@@ -7,6 +7,7 @@ from django.core.mail import EmailMultiAlternatives
 import datetime
 # Create your views here.
 
+# This function used for creating key value pair which is used in context for sending to frontend
 def dynamic_dict(sample_dict, key, value):
     if key not in sample_dict:
         sample_dict[key] = value
