@@ -7,18 +7,30 @@ from django.core.mail import EmailMultiAlternatives
 import datetime
 # Create your views here.
 
+<<<<<<< HEAD
+=======
+# This function used for creating key value pair which is used in context for sending to frontend
+>>>>>>> ed50e03d27003b975da8ce3ed0ad15bd0ef1896b
 def dynamic_dict(sample_dict, key, value):
     if key not in sample_dict:
         sample_dict[key] = value
     return sample_dict
 
+<<<<<<< HEAD
+=======
+# index page call this function whenerver page get load
+>>>>>>> ed50e03d27003b975da8ce3ed0ad15bd0ef1896b
 def home(request):
     context = {}
     cursor = connection.cursor()
     cursor.execute("select email_id from users ")
     record = cursor.fetchall()
     cursor.close()
+<<<<<<< HEAD
     ## Upcoming interviews 
+=======
+    ## Upcoming interviews list
+>>>>>>> ed50e03d27003b975da8ce3ed0ad15bd0ef1896b
     names, emails,start_time, end_time, interview_id = show_upcoming_interviews()
     res = zip( names,emails, start_time,end_time, interview_id)
     context = dynamic_dict(context,'records',res)

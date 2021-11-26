@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../static/css/styles.css">
+  <title>Document</title>
+  <script>
+  h1{text-align: center;}
+  </script>
+</head>
+
+<body>
+  <h1 style="text-align: center;" >Interview Creation Portal</h1>
+  <h3 style="text-align: center;" >Schedule Interview</h3>
+  <form action="../myapp/" method="POST"> 
+  {% csrf_token %}
+    <div class="">
+{%  if messages %}
+        {% for message in messages %}
+        <div class="credentials-status {{ message.tags }}">
+          <p class="msg_description">{{message}} &nbsp;</p>
+          </div>
+        {% endfor %}
+      {% endif %}
+    
+
+
+    <div class="">
+      <label style="text-align: center;"  for="cars">Interviewee</label>
+
+      <select  style="text-align: center;"   id="list" name = "list"  multiple = "multiple">
+         {% for l in list %}
+        <option value="{{l.id}}"  >{{l}}</option>
+        {%endfor%}
+        <option value="{{email1}}" >{{email1}}</option>
+        <option value="{{email2}}" >{{email2}}</option>
+        <option value="{{email3}}" >{{email3}}</option>
+        <option value="{{email4}}" >{{email4}}</option>
+        <option value="{{email5}}" name = >{{email5}}</option>
+      </select>
+      
+    </div>
+    <br>
+    
+    <div class="center">
+      <label for=""  >Start Time</label>
+      <input type="datetime-local"  min="2021-11-01T08:30" name = "start_Time" >
+    </div>
+    <br>
+    <div class="">
+      <label for="" style="text-align: center;"  >End Time</label>
+      <input type="datetime-local" name = "end_Time" >
+    </div>
+    <br>
+    <form "../myapp/" method="POST"> 
+        {% csrf_token %}   
+        
+      <button type="submit" title="Add interview">Add INTERVIEW</button>
+      <input type= "hidden" id = "button_value_add"  name = "button_value_add" value = "add_interview">
+    </form>  
+
+  </form>
+
+  <br><br><br>
+  <hr>
+
+  <h3>Upcoming Interview</h3>
+  <table>
+
+    <tr>
+      <th> Interviewee</th>
+      <th>Email</th>
+      <th>Start Time</th>
+      <th>End Time</th>
+      <th>Actions</th>
+    </tr>
+    {%for name,email, start_time, end_time,id in records%}
+    <tr>
+      <td>{{name}}</td>
+      <td>{{email}}</td>
+      <td>{{start_time}}</td>
+      <td>{{end_time}}</td>
+      <td>
+        <div class="actions">
+        <form "../myapp/" method="POST"> 
+        {% csrf_token %}   
+        <button  type = "submit"  title="Delete Form">Delete</button>                
+          <input type= "hidden" id = "button_value"  name = "button_value"value = "delete">
+          <input type= "hidden" id = "interview_id"  name = "interview_id"value = "{{id}}"> 
+          <input type= "hidden" id = "start_time"  name = "start_time"value = "{{start_time}}"> 
+          <input type= "hidden" id = "end_time"  name = "end_time"value = "{{end_time}}">  
+          <!--<button type="submit" title="Delete Form" value = "delete">Edit</button>-->
+        </form> 
+        </div>
+      </td>
+    </tr>
+    {%endfor%}
+
+  </table>
+
+  <br><br><br>
+  <hr>
+
+
+
+
+
+
+
+
+  <script src="../static/js/script.js"></script>
+
+</body>
+</html>
