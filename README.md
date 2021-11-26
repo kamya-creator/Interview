@@ -16,5 +16,6 @@
         endTime DATETIME NOT NULL,
         PRIMARY KEY (id));    </br>
 # Features of this project
-With this project admin can schedule interview and can send mail regarding interview . 
-After scheduling interview , admin can also delete interview details .
+With this project admin can schedule interview and can send mail regarding interview . </br>
+All upcoming interwies are shown on page. </br>
+After scheduling interview , admin can also delete interview details .</br>
