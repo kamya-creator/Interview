@@ -13,13 +13,14 @@ def dynamic_dict(sample_dict, key, value):
         sample_dict[key] = value
     return sample_dict
 
+# index page call this function whenerver page get load
 def home(request):
     context = {}
     cursor = connection.cursor()
     cursor.execute("select email_id from users ")
     record = cursor.fetchall()
     cursor.close()
-    ## Upcoming interviews 
+    ## Upcoming interviews list
     names, emails,start_time, end_time, interview_id = show_upcoming_interviews()
     res = zip( names,emails, start_time,end_time, interview_id)
     context = dynamic_dict(context,'records',res)
