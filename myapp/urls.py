@@ -6,6 +6,5 @@ from myapp import views
 
 urlpatterns = [
     path('', views.home),
-    
-    
+    path('\edit', views.edit),
 ]

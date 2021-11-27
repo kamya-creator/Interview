@@ -1,46 +1,101 @@
-:root {
-    --color-light-yellow: #fbd341;
-    --color-yellow: #EFA21E;
-  
-    --color-red-notification: #F84F31;
-    --color-green-notification: #23c552;
-  
-    --color-sidebar: #022E57;
-    --color-sidebar-content: #80571e;
-  
-    --color-grey-pink: #f7f6e7;
-    --color-grey: #f7f7f7;
-    --color-dark-grey: #dfe0df;
-  
-    --color-shadow: rgba(0, 0, 0, 0.2); 
-  }
-.center {
-  margin: auto;
-  width: 60%;
-  border: 3px solid #73AD21;
-  padding: 10px;
+*, *::after, *::before{
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
 }
-h1{
+
+body{
+  background-color: #B8E4F0;
+  font-family: 'Poppins', sans-serif;
+}
+
+section{
+  padding: 2rem;
+}
+
+h1, h3{
+  color: #6E3CBC;
+}
+
+.container{
+  width: 80%;
+  margin: 3rem auto;
   text-align: center;
-}  
-.credentials-status{
-    font-size: 1.5rem;
-    padding: 1rem;
-    position: relative;
-    bottom: 4rem;
-    font-weight: 400;
-    display: flex;
-    align-items: center;
-    
-    border-radius: .5rem;
-  }
-  
-  
-  .success{
-    background-color: var(--color-green-notification);
-  }
-  
-  .error{
-    background-color: var(--color-red-notification);
-  }
-  
+}
+
+
+.input-fields{
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+}
+
+.input-field *{
+  display: block;
+  width: 100%;
+}
+
+.input-field{
+  width: 30%;
+  padding: .5rem 1rem;
+  text-align: center;
+}
+
+.btn{
+  width: 100%;
+  padding: .5rem;
+  border: none;
+  outline: none;
+  color: #fff;
+  font-family: 'Poppins', sans-serif;
+  border-radius: 3px;
+  font-size: 1rem;
+  background-color: rgba(22, 79, 235, 0.719);
+}
+
+.table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.table td, .table th {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+.table tr:nth-child(even){background-color: #f2f2f2;}
+
+.table tr:hover {background-color: #ddd;}
+
+.table th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  font-weight: 400;
+  background-color: rgba(22, 79, 235, 0.719);
+  color: white;
+}
+
+.action-form{
+  width: 45%;
+  display: inline-block;
+}
+
+
+.success{
+  background-color: #57e07e;
+}
+
+.error{
+  background-color: #f06f58;
+}
+
+.interview-status{
+  padding: .5rem;
+  border-radius: 3px;
+  width: max-content;
+  display: inline-block;
+}
+
+.hide{
+  display: none;
+}

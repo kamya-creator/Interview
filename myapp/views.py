@@ -7,30 +7,20 @@ from django.core.mail import EmailMultiAlternatives
 import datetime
 # Create your views here.
 
-<<<<<<< HEAD
-=======
 # This function used for creating key value pair which is used in context for sending to frontend
->>>>>>> ed50e03d27003b975da8ce3ed0ad15bd0ef1896b
 def dynamic_dict(sample_dict, key, value):
     if key not in sample_dict:
         sample_dict[key] = value
     return sample_dict
 
-<<<<<<< HEAD
-=======
 # index page call this function whenerver page get load
->>>>>>> ed50e03d27003b975da8ce3ed0ad15bd0ef1896b
 def home(request):
     context = {}
     cursor = connection.cursor()
     cursor.execute("select email_id from users ")
     record = cursor.fetchall()
     cursor.close()
-<<<<<<< HEAD
-    ## Upcoming interviews 
-=======
     ## Upcoming interviews list
->>>>>>> ed50e03d27003b975da8ce3ed0ad15bd0ef1896b
     names, emails,start_time, end_time, interview_id = show_upcoming_interviews()
     res = zip( names,emails, start_time,end_time, interview_id)
     context = dynamic_dict(context,'records',res)
@@ -50,7 +40,16 @@ def home(request):
     
     if request.method == "POST" :
         print("Kamya Krishna",request.POST.get('button_value'))
-        if request.POST.get('button_value'):
+        if request.POST.get("button_value_edit"):
+            button_clicked = request.POST['button_value_edit']
+            interview_id_edit = request.POST['interview_id_edit']
+            start_time, end_time = edit(request, interview_id_edit)
+            context = dynamic_dict(context,'start_time',start_time)
+            context = dynamic_dict(context,'end_time',end_time)
+            print(interview_id_edit)
+            #return render(request, 'index.html', context)
+
+        elif request.POST.get('button_value'):
             button_clicked = request.POST['button_value']
             if button_clicked == 'delete' :
                 print("'delete=========")
@@ -233,4 +232,23 @@ def delete_interview(interview_id, start_time, end_time):
         else :
             return False    
             
-       
+
+def edit(request, interview_id_edit):
+    
+    interview_id_edit = (int)(interview_id_edit)
+    
+    cursor = connection.cursor(); 
+    cursor.execute("select startTime , endTime  from interviews where id=%s ",[interview_id_edit])
+    record = cursor.fetchone()
+    cursor.close()
+    start_time = record[0]
+    end_time= record[1]
+
+    start_time = record[0].strftime("%Y-%m-%dT%H:%M:%S")
+    
+    end_time = record[0].strftime("%Y-%m-%dT%H:%M:%S")
+
+    res = "Krishna"
+    return start_time, end_time   
+    
+          

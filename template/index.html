@@ -4,113 +4,120 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+
+   <!-- Icons -->
+   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+   <script defer src="https://use.fontawesome.com/releases/v5.0.7/js/all.js"></script>
+
+
   <link rel="stylesheet" href="../static/css/styles.css">
-  <title>Document</title>
-  <script>
-  h1{text-align: center;}
-  </script>
+  <title>Interview Creation Portal</title>
 </head>
 
 <body>
-  <h1 style="text-align: center;" >Interview Creation Portal</h1>
-  <h3 style="text-align: center;" >Schedule Interview</h3>
-  <form action="../myapp/" method="POST"> 
-  {% csrf_token %}
-    <div class="">
-{%  if messages %}
-        {% for message in messages %}
-        <div class="credentials-status {{ message.tags }}">
-          <p class="msg_description">{{message}} &nbsp;</p>
-          </div>
-        {% endfor %}
-      {% endif %}
-    
+  <div class="container">
+    <h1>Interview Creation Portal</h1>
 
 
-    <div class="">
-      <label style="text-align: center;"  for="cars">Interviewee</label>
 
-      <select  style="text-align: center;"   id="list" name = "list"  multiple = "multiple">
-         {% for l in list %}
-        <option value="{{l.id}}"  >{{l}}</option>
-        {%endfor%}
-        <option value="{{email1}}" >{{email1}}</option>
-        <option value="{{email2}}" >{{email2}}</option>
-        <option value="{{email3}}" >{{email3}}</option>
-        <option value="{{email4}}" >{{email4}}</option>
-        <option value="{{email5}}" name = >{{email5}}</option>
-      </select>
-      
-    </div>
-    <br>
-    
-    <div class="center">
-      <label for=""  >Start Time</label>
-      <input type="datetime-local"  min="2021-11-01T08:30" name = "start_Time" >
-    </div>
-    <br>
-    <div class="">
-      <label for="" style="text-align: center;"  >End Time</label>
-      <input type="datetime-local" name = "end_Time" >
-    </div>
-    <br>
-    <form "../myapp/" method="POST"> 
-        {% csrf_token %}   
-        
-      <button type="submit" title="Add interview">Add INTERVIEW</button>
-      <input type= "hidden" id = "button_value_add"  name = "button_value_add" value = "add_interview">
-    </form>  
+    <section class="add-interview">
 
-  </form>
+      <h3>Schedule Interview</h3>
 
-  <br><br><br>
-  <hr>
+        {%  if messages %}
+          {% for message in messages %}
+            <div class="interview-status {{ message.tags }}">{{message}} &nbsp; <i id="close-msg" onclick="closeMsg()" class="far fa-times-circle"></i> </div>
+          {% endfor %}
+        {% endif %}
 
-  <h3>Upcoming Interview</h3>
-  <table>
+      <form action="../myapp/" method="POST" class="form"> 
+        {% csrf_token %}
 
-    <tr>
-      <th> Interviewee</th>
-      <th>Email</th>
-      <th>Start Time</th>
-      <th>End Time</th>
-      <th>Actions</th>
-    </tr>
-    {%for name,email, start_time, end_time,id in records%}
-    <tr>
-      <td>{{name}}</td>
-      <td>{{email}}</td>
-      <td>{{start_time}}</td>
-      <td>{{end_time}}</td>
-      <td>
-        <div class="actions">
-        <form "../myapp/" method="POST"> 
-        {% csrf_token %}   
-        <button  type = "submit"  title="Delete Form">Delete</button>                
-          <input type= "hidden" id = "button_value"  name = "button_value"value = "delete">
-          <input type= "hidden" id = "interview_id"  name = "interview_id"value = "{{id}}"> 
-          <input type= "hidden" id = "start_time"  name = "start_time"value = "{{start_time}}"> 
-          <input type= "hidden" id = "end_time"  name = "end_time"value = "{{end_time}}">  
-          <!--<button type="submit" title="Delete Form" value = "delete">Edit</button>-->
-        </form> 
+        <div class="input-fields">
+        <div class="input-field">
+          <label for="cars">Interviewee</label>
+          <select id="list" name = "list"  multiple = "multiple">
+              {% for l in list %}
+            <option value="{{l.id}}"  >{{l}}</option>
+            {%endfor%}
+            <option value="{{email1}}" >{{email1}}</option>
+            <option value="{{email2}}" >{{email2}}</option>
+            <option value="{{email3}}" >{{email3}}</option>
+            <option value="{{email4}}" >{{email4}}</option>
+            <option value="{{email5}}" name = >{{email5}}</option>
+          </select> 
         </div>
-      </td>
-    </tr>
-    {%endfor%}
 
-  </table>
+        <div class="input-field">
+          <label for=""  >Start Time</label>
+          <input type="datetime-local"  min="2021-11-01T08:30" name = "start_Time"  value = "{{start_time}}">
+        </div>
 
-  <br><br><br>
+        <div class="input-field">
+          <label for="" >End Time</label>
+          <input type="datetime-local" name = "end_Time" value = "{{end_time}}">
+        </div>
+
+      </div>
+            
+        <button class="btn" type="submit" title="Add interview">ADD INTERVIEW</button>
+        <input type= "hidden" id = "button_value_add"  name = "button_value_add" value = "add_interview"> 
+      </form>
+
+    </section>
+
   <hr>
+    <section class="interview-list">
+      <h3>Upcoming Interview</h3>
+
+      <table class="table">
+        <tr>
+          <th>Interviewee</th>
+          <th>Email</th>
+          <th>Start Time</th>
+          <th>End Time</th>
+          <th>Actions</th>
+        </tr>
+        {%for name,email, start_time, end_time,id in records%}
+        <tr>
+          <td>{{name}}</td>
+          <td>{{email}}</td>
+          <td>{{start_time}}</td>
+          <td>{{end_time}}</td>
+          <td>
+            <div class="actions">
+            <form "../myapp/" method="POST"> 
+            {% csrf_token %}   
+            <button  type = "submit"  title="Delete Form">Delete</button>                
+              <input type= "hidden" id = "button_value"  name = "button_value"value = "delete">
+              <input type= "hidden" id = "interview_id"  name = "interview_id"value = "{{id}}">
+            </form> 
+            <form "../myapp/" method = "POST">
+              {% csrf_token %} 
+              <button type="submit" title="Edit Form" value = "delete">Edit</button>
+              <input type= "hidden" id = "button_value_edit"  name = "button_value_edit"value = "edit">
+              <input type= "hidden" id = "interview_id_edit"  name = "interview_id_edit"value = "{{id}}">
+            </form> 
+
+            </div>
+          </td>
+        </tr>
+        {%endfor%}
 
 
+      </table>
+    </section>
 
-
-
-
-
-
-  <script src="../static/js/script.js"></script>
+  </div>
+  <script>
+    function closeMsg(){
+    const parentCont = document.getElementById("close-msg").parentElement;
+    parentCont.classList.add("hide");
+  }
+  </script>
 
 </body>
 </html>
