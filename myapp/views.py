@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django. http import HttpResponse
 from django.db import connection
 from django.contrib import messages
@@ -16,37 +16,22 @@ def dynamic_dict(sample_dict, key, value):
 # index page call this function whenerver page get load
 def home(request):
     context = {}
-    cursor = connection.cursor()
-    cursor.execute("select email_id from users ")
-    record = cursor.fetchall()
-    cursor.close()
-    ## Upcoming interviews list
-    names, emails,start_time, end_time, interview_id = show_upcoming_interviews()
-    res = zip( names,emails, start_time,end_time, interview_id)
-    context = dynamic_dict(context,'records',res)
-
-    emails = []
-    if(len(record) >0):
-        for li in record:
-            emails.append(li)
-
-    
-    context = dynamic_dict(context,'email1',emails[0][0])
-    context = dynamic_dict(context,'email2',emails[1][0])
-    context = dynamic_dict(context,'email3',emails[2][0])
-    context = dynamic_dict(context,'email4',emails[3][0])
-    context = dynamic_dict(context,'email5',emails[4][0])
-    
     
     if request.method == "POST" :
-        print("Kamya Krishna",request.POST.get('button_value'))
-        if request.POST.get("button_value_edit"):
+        if request.POST.get("button_value_edit") == "edit":
             button_clicked = request.POST['button_value_edit']
             interview_id_edit = request.POST['interview_id_edit']
-            start_time, end_time = edit(request, interview_id_edit)
+            start_time, end_time , email= edit(request, interview_id_edit)
+            global interview_id_update 
+            interview_id_update = interview_id_edit
             context = dynamic_dict(context,'start_time',start_time)
             context = dynamic_dict(context,'end_time',end_time)
-            print(interview_id_edit)
+            context = dynamic_dict(context, 'selected', email)
+            context = dynamic_dict(context, 'show_update_button', "1")
+
+                    
+                  
+
             #return render(request, 'index.html', context)
 
         elif request.POST.get('button_value'):
@@ -56,19 +41,32 @@ def home(request):
                 interview_id = request.POST['interview_id']
                 print(interview_id)
                 
-                print(start_time , end_time, "Krishna+++++++++++++++++++++++++++++++++++")
-                res_delete = delete_interview(interview_id, start_time, end_time)
+                print("Krishna+++++++++++++++++++++++++++++++++++")
+                res_delete = delete_interview(interview_id)
                 if(res_delete):
                     messages.success(request, 'Deleted')
                     names, emails,start_time, end_time, interview_id = show_upcoming_interviews()
                     res = zip( names,emails, start_time,end_time, interview_id)
                     context = dynamic_dict(context,'records',res)
-                    return render(request, 'index.html', context)
                 else:
                     messages.error(request, 'Cannot delete because no. of candidates must be greater than 2')
                     
-                    return render(request, 'index.html', context)
-        else:
+
+
+        elif request.POST.get('button_value_update'):
+            button_clicked = request.POST['button_value_update']
+            if button_clicked == 'update_interview' :
+                print("Krishna")
+                print("I M HERE")
+                interview_id = interview_id_update 
+                end_Time = request.POST['end_Time']
+                start_Time = request.POST['start_Time']
+                print(end_Time, "+++++++++++++++++++++++++")
+                update(request , interview_id,start_Time, end_Time)
+
+                    
+                           
+        else: ###################### ADD INTERVIEW BUTTON IS CLICKED
             email2 = request.POST.getlist("list")
             if(len(email2)<2):
                 
@@ -124,11 +122,38 @@ def home(request):
                     names, emails,start_time, end_time, interview_id = show_upcoming_interviews()
                     res = zip( names,emails, start_time,end_time, interview_id)
                     context = dynamic_dict(context,'records',res)
-                    messages.success(request, 'Interview Scheduled Please Refesh!!!!!')
+                    messages.success(request, 'Interview Scheduled ')
                     return render(request, 'index.html', context)
                 else:
                     messages.error(request, 'Candidates are not available ')
     #return HttpResponse('Home Page is working')
+
+
+    cursor = connection.cursor()
+    cursor.execute("select email_id from users ")
+    record = cursor.fetchall()
+    cursor.close()
+    emails = []
+    if(len(record) >0):
+        for li in record:
+            emails.append(li)
+
+    
+    context = dynamic_dict(context,'email1',emails[0][0])
+    context = dynamic_dict(context,'email2',emails[1][0])
+    context = dynamic_dict(context,'email3',emails[2][0])
+    context = dynamic_dict(context,'email4',emails[3][0])
+    context = dynamic_dict(context,'email5',emails[4][0])
+
+    ## Upcoming interviews list
+    names, emails_list,start_time, end_time, interview_id = show_upcoming_interviews()
+    res = zip( names,emails_list, start_time,end_time, interview_id)
+    context = dynamic_dict(context,'records',res)
+
+    
+
+
+
     return render(request, 'index.html', context)
 
     
@@ -190,9 +215,9 @@ def show_upcoming_interviews():
 
     for row in records:
         emails.append(row[0])
-        start_time = row[1].strftime("%m/%d/%Y, %H:%M:%S")
+        start_time = row[1].strftime("%d-%m-%Y,  %H:%M:%S")
         startTime.append(start_time)
-        end_time = row[2].strftime("%m/%d/%Y, %H:%M:%S")
+        end_time = row[2].strftime("%d-%m-%Y,   %H:%M:%S")
         endTime.append(end_time) 
         interview_id.append(row[3])
 
@@ -209,7 +234,7 @@ def show_upcoming_interviews():
     return names,emails, startTime, endTime, interview_id
                 
 
-def delete_interview(interview_id, start_time, end_time):
+def delete_interview(interview_id):
         
         cursor = connection.cursor(); 
         cursor.execute("select startTime, endTime from interviews where id=%s ",[interview_id])
@@ -238,17 +263,43 @@ def edit(request, interview_id_edit):
     interview_id_edit = (int)(interview_id_edit)
     
     cursor = connection.cursor(); 
-    cursor.execute("select startTime , endTime  from interviews where id=%s ",[interview_id_edit])
+    cursor.execute("select startTime , endTime , email from interviews where id=%s ",[interview_id_edit])
     record = cursor.fetchone()
     cursor.close()
     start_time = record[0]
     end_time= record[1]
+    email = record[2]
 
     start_time = record[0].strftime("%Y-%m-%dT%H:%M:%S")
     
     end_time = record[0].strftime("%Y-%m-%dT%H:%M:%S")
 
-    res = "Krishna"
-    return start_time, end_time   
+    return start_time, end_time  , email 
+
+def update(request , interview_id,start_updated, end_updated) :
+    print("Krishna Help")
+
+    '''
+    start_updated = start_updated + ":00"
+    end_updated = end_updated + ":00"'''
+    start_updated = start_updated.replace('T', " ")
+    end_updated = end_updated.replace('T', " ")
+    
+    cursor = connection.cursor(); 
+    cursor.execute("Update interviews set startTime=%s, endTime=%s where id=%s ",[start_updated, end_updated, interview_id])
+    record = cursor.fetchone()
+    cursor.close()
+    
+    messages.success(request, 'Interview Updated Successfully ')
+    return
+    ########## Checking if candidate is available or not in this time slot
+    '''validate = checking(email, start_updated, end_updated)
+    if(validate):
+        update(interview_id_edit, start_updated, end_updated)
+        messages.success(request, 'Updated Successfully')
+    else:
+        messages.error(request, 'Candidate is not available in this time slot')  '''  
+    
+   
     
           

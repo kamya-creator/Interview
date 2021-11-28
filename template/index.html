@@ -40,15 +40,35 @@
         <div class="input-field">
           <label for="cars">Interviewee</label>
           <select id="list" name = "list"  multiple = "multiple">
-              {% for l in list %}
-            <option value="{{l.id}}"  >{{l}}</option>
-            {%endfor%}
-            <option value="{{email1}}" >{{email1}}</option>
-            <option value="{{email2}}" >{{email2}}</option>
-            <option value="{{email3}}" >{{email3}}</option>
-            <option value="{{email4}}" >{{email4}}</option>
-            <option value="{{email5}}" name = >{{email5}}</option>
-          </select> 
+            
+            {% if selected == "deepshisharma123@gmail.com" %}
+                  <option value="{{email1}}" selected>{{email1}}</option>
+            {% else %}  
+                                
+            <option value="{{email1}}"  >{{email1}}</option>  
+            {% endif%}
+            {% if selected == "kamya069mca20@igdtuw.ac.in" %}
+                  <option value="{{email2}}" selected>{{email2}}</option>
+            {% else %}                      
+            <option value="{{email2}}"  >{{email2}}</option>  
+            {% endif%}
+            {% if selected == "kamyap07@gmail.com" %}
+                  <option value="{{email3}}" selected>{{email3}}</option>
+            {% else %}                      
+            <option value="{{email3}}"  >{{email3}}</option> 
+            {% endif%}
+            {% if selected == "kamyap2000@gmail.com" %}
+                  <option value="{{email4}}" selected>{{email4}}</option>
+            {% else %}                      
+            <option value="{{email4}}"  >{{email4}}</option> 
+            {% endif%}
+            {% if selected == "kushagra98@live.com" %}
+                  <option value="{{email5}}" selected>{{email5}}</option>
+            {% else %}                      
+            <option value="{{email5}}"  >{{email5}}</option>
+            {% endif%}
+            
+          </select><br> <p style="color:blue;"> *Hold Ctrl to select multiple option</p>
         </div>
 
         <div class="input-field">
@@ -62,9 +82,20 @@
         </div>
 
       </div>
-            
-        <button class="btn" type="submit" title="Add interview">ADD INTERVIEW</button>
+
+      
+      {% if show_update_button == "1" %}
+      
+        <button class="btn" type="submit" title="Update interview" >Update INTERVIEW</button>
+        <input type= "hidden" id = "button_value_update"  name = "button_value_update" value = "update_interview"> 
+       <input type= "hidden" id = "interview_id_update"  name = "interview_id_update"value = "{{id}}">
+      
+      {%else%}
+      
+        <button class="btn" type="submit" title="Add interview" >ADD INTERVIEW</button>
         <input type= "hidden" id = "button_value_add"  name = "button_value_add" value = "add_interview"> 
+      
+      {%endif%}
       </form>
 
     </section>
@@ -89,17 +120,16 @@
           <td>{{end_time}}</td>
           <td>
             <div class="actions">
-            <form "../myapp/" method="POST"> 
+            <form action = "../myapp/" method="POST"> 
             {% csrf_token %}   
             <button  type = "submit"  title="Delete Form">Delete</button>                
               <input type= "hidden" id = "button_value"  name = "button_value"value = "delete">
               <input type= "hidden" id = "interview_id"  name = "interview_id"value = "{{id}}">
-            </form> 
-            <form "../myapp/" method = "POST">
-              {% csrf_token %} 
-              <button type="submit" title="Edit Form" value = "delete">Edit</button>
+          
+              <button type="submit" title="Edit Form" value = "edit">Edit</button>
               <input type= "hidden" id = "button_value_edit"  name = "button_value_edit"value = "edit">
               <input type= "hidden" id = "interview_id_edit"  name = "interview_id_edit"value = "{{id}}">
+
             </form> 
 
             </div>
