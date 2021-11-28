@@ -1,7 +1,5 @@
-<<<<<<< HEAD
+
 # Interview
-Interview Creation Portal assignment for InterviewBit round 2
-=======
 # This Project use Django Framework and MySQL
 1. In order to run this project in your computer install django using "pip install django" command 
 2. Use "pip install mysqlclient" to install mysqlclient for Django as MySQl is used in project
@@ -22,4 +20,3 @@ Interview Creation Portal assignment for InterviewBit round 2
 # Features of this project
 With this project admin can schedule interview and can send mail regarding interview . 
 After scheduling interview , admin can also delete interview details .
->>>>>>> ed50e03d27003b975da8ce3ed0ad15bd0ef1896b
