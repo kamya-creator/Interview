@@ -32,7 +32,6 @@ def home(request):
                     
 
         elif request.POST.get("button_value") == "delete":
-            print(request.POST.get('button_value'), "Krishna Help Please")
             button_clicked = request.POST['button_value']
             if button_clicked == 'delete' :
                 print("'delete=========")
