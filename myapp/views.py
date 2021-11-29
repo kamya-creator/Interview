@@ -30,24 +30,21 @@ def home(request):
             context = dynamic_dict(context, 'show_update_button', "1")
 
                     
-                  
 
-            #return render(request, 'index.html', context)
-
-        elif request.POST.get('button_value'):
+        elif request.POST.get("button_value") == "delete":
+            print(request.POST.get('button_value'), "Krishna Help Please")
             button_clicked = request.POST['button_value']
             if button_clicked == 'delete' :
                 print("'delete=========")
                 interview_id = request.POST['interview_id']
                 print(interview_id)
                 
-                print("Krishna+++++++++++++++++++++++++++++++++++")
                 res_delete = delete_interview(interview_id)
                 if(res_delete):
                     messages.success(request, 'Deleted')
-                    names, emails,start_time, end_time, interview_id = show_upcoming_interviews()
+                    '''names, emails,start_time, end_time, interview_id = show_upcoming_interviews()
                     res = zip( names,emails, start_time,end_time, interview_id)
-                    context = dynamic_dict(context,'records',res)
+                    context = dynamic_dict(context,'records',res)'''
                 else:
                     messages.error(request, 'Cannot delete because no. of candidates must be greater than 2')
                     
@@ -85,7 +82,6 @@ def home(request):
                 validate = checking(email2, start,end)
                 link = "https://meet.google.com/upb-kvky-xqf"
                 
-                print(validate , "Krishnaaaa help")
                 if validate :
                     print("Good Luck")
                     start_time = start + ":00"
@@ -123,7 +119,7 @@ def home(request):
                     res = zip( names,emails, start_time,end_time, interview_id)
                     context = dynamic_dict(context,'records',res)
                     messages.success(request, 'Interview Scheduled ')
-                    return render(request, 'index.html', context)
+                    
                 else:
                     messages.error(request, 'Candidates are not available ')
     #return HttpResponse('Home Page is working')
@@ -277,11 +273,7 @@ def edit(request, interview_id_edit):
     return start_time, end_time  , email 
 
 def update(request , interview_id,start_updated, end_updated) :
-    print("Krishna Help")
-
-    '''
-    start_updated = start_updated + ":00"
-    end_updated = end_updated + ":00"'''
+   
     start_updated = start_updated.replace('T', " ")
     end_updated = end_updated.replace('T', " ")
     

@@ -33,7 +33,7 @@
           {% endfor %}
         {% endif %}
 
-      <form action="../myapp/" method="POST" class="form"> 
+      <form action="../myapp/" method="POST" > 
         {% csrf_token %}
 
         <div class="input-fields">
@@ -122,11 +122,14 @@
             <div class="actions">
             <form action = "../myapp/" method="POST"> 
             {% csrf_token %}   
-            <button  type = "submit"  title="Delete Form">Delete</button>                
-              <input type= "hidden" id = "button_value"  name = "button_value"value = "delete">
-              <input type= "hidden" id = "interview_id"  name = "interview_id"value = "{{id}}">
-          
-              <button type="submit" title="Edit Form" value = "edit">Edit</button>
+            <button   class = "btn1" type = "submit"  title="Delete Form">Delete</button>                
+              <input type= "hidden" id = "button_value"  name = "button_value" value = "delete">
+              <input type= "hidden" id = "interview_id"  name = "interview_id" value = "{{id}}">
+            
+            </form>
+            <form action = "../myapp/" method="POST"> 
+              {% csrf_token %}   
+              <button   class = "btn1" type="submit" title="Edit Form" value = "edit">Edit</button>
               <input type= "hidden" id = "button_value_edit"  name = "button_value_edit"value = "edit">
               <input type= "hidden" id = "interview_id_edit"  name = "interview_id_edit"value = "{{id}}">
 

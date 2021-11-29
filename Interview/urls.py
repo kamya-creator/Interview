@@ -19,8 +19,6 @@ from django.http import HttpResponse
 from django.urls import path, include, re_path
 from myapp import views
 
-def home(request):
-    return HttpResponse('Home Page')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
